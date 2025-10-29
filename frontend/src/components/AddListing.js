@@ -213,5 +213,74 @@ const AddListing = () => {
     </FormContainer>
   );
 };
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage('');
+
+    // Basic frontend validation before file processing
+    if (!formData.category) {
+      setMessage('Please select a category');
+      setLoading(false);
+      return;
+    }
+    if (!formData.condition) {
+      setMessage('Please select a condition');
+      setLoading(false);
+      return;
+    }
+    if (!formData.image) {
+      setMessage('Please select an image');
+      setLoading(false);
+      return;
+    }
+    if (formData.startTime && formData.endTime) {
+      const start = new Date(formData.startTime).getTime();
+      const end = new Date(formData.endTime).getTime();
+      if (isFinite(start) && isFinite(end) && end <= start) {
+        setMessage('End time must be after start time');
+        setLoading(false);
+        return;
+      }
+    }
+
+    try {
+      // Convert image to base64
+      const reader = new FileReader();
+      reader.readAsDataURL(formData.image);
+      reader.onloadend = async () => {
+        try {
+          const imageBase64 = reader.result;
+          
+          const listingData = {
+            title: formData.title,
+            description: formData.description,
+            startPrice: parseFloat(formData.startPrice),
+            startTime: new Date(formData.startTime).toISOString(),
+            endTime: new Date(formData.endTime).toISOString(),
+            image: imageBase64,
+            category: formData.category,
+            condition: formData.condition
+          };
+
+          await apiService.createListing(listingData);
+          setMessage('Listing created successfully!');
+          setTimeout(() => {
+            navigate('/listings');
+          }, 1500);
+        } catch (error) {
+          setMessage(`Error: ${error.message || 'Failed to create listing. Please check if the backend server is running.'}`);
+          setLoading(false);
+        }
+      };
+      reader.onerror = () => {
+        setMessage('Error reading image file');
+        setLoading(false);
+      };
+    } catch (error) {
+      setMessage(`Error: ${error.message || 'Failed to create listing. Please check if the backend server is running.'}`);
+      setLoading(false);
+    }
+  };
 
 export default AddListing;
