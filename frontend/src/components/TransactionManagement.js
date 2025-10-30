@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // ✅ ADD THIS
 import api from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import styled from 'styled-components';
@@ -274,6 +275,7 @@ const TextArea = styled.textarea`
 
 const TransactionManagement = () => {
   const { user } = useAuth();
+  const navigate = useNavigate(); // ✅ ADD THIS
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');

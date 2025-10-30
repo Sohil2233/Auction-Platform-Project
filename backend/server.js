@@ -21,7 +21,9 @@ import transactionRoutes from "./routes/transactions.js";
 import reportRoutes from "./routes/reports.js";
 
 dotenv.config();
-const MONGO_URI ="mongodb://localhost:27017/auction-app"
+// const MONGO_UR
+// I ="mongodb://localhost:27017/auction-app"
+const MONGO_URI = process.env.ATLASDB;
 const app = express();
 
 // Basic security middleware

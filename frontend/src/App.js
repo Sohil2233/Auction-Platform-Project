@@ -12,6 +12,7 @@ import Auction from './components/Auction';
 import Notifications from './components/Notifications';
 import UserProfile from './components/UserProfile';
 import TransactionManagement from './components/TransactionManagement';
+import FeedbackPage from './components/FeedbackPage'; // ✅ ADD THIS
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/profile/:userId" element={<UserProfile />} />
               <Route path="/transactions" element={<TransactionManagement />} />
+              <Route path="/feedback/:transactionId" element={<FeedbackPage />} /> {/* ✅ ADD THIS */}
             </Routes>
           </Layout>
         </AppContainer>
